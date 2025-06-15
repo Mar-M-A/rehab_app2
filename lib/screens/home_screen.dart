@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                             title: Text(session)
                         ),
                     )),
-                    // add slidable cards here
+                    
                     
                     const SizedBox(height: 20),
                     ElevatedButton(

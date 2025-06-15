@@ -30,6 +30,7 @@ class ExerciseScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // TODO: Mark as complete and return to workout or home
+                Navigator.pushNamed(context, '/workout');
               },
               child: Text('Mark Complete'),
             ),
