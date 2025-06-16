@@ -25,13 +25,13 @@ class _ExerciseScreenState extends State<ExerciseScreen>
     void initState()
     {
         super.initState();
-        _metrics = ApoService.fetchMetrics(widget.exerciseName);
+        _metrics = ApiService.fetchMetrics(widget.exerciseName);
     }
 
     @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(exerciseName)),
+      appBar: AppBar(title: Text(widget.exerciseName)),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -46,7 +46,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
             FutureBuilder<List<Metrics>>(
                 future: _metrics,
                 builder: (context, snapshot){
-                    if (snapshot.connectionState == ConnectionSttate.waiting)
+                    if (snapshot.connectionState == ConnectionState.waiting)
                         return Center(child: CircularProgressIndicator());
                     if (snapshot.hasError)
                         return Center(child: Text('Error: ${snapshot.error}'));

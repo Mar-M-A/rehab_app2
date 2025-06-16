@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:http/http:dart' as http;
+import 'package:http/http.dart' as http;
 import '../models/user_model.dart';
 
-class AppService
+class ApiService
 {
     static const String baseUrl = 'https://api';
 
@@ -13,7 +13,7 @@ class AppService
         if (response.statusCode == 200)
         {
             final List<dynamic> jsonData = json.decode(response.body);
-            return jsonData.map((item) => Metric.fromJson(item)).toList();
+            return jsonData.map((item) => Metrics.fromJson(item)).toList();
         } else {
             throw Exception('Failed to load metrics');
         }
