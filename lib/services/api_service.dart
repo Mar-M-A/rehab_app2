@@ -6,7 +6,7 @@ class ApiService
 {
     static const String baseUrl = 'https://api';
 
-    static Future<List<Metrics>> fetchMetrics() async
+    static Future<List<Metrics>> fetchMetrics(String exerciseName) async
     {
         final response = await http.get(Uri.parse('https://yourapi.com/metrics?exercise=$exerciseName'));
 
