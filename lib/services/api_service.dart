@@ -61,7 +61,7 @@ class ApiService
 
     static Future<bool> createUser(Map<String, dynamic> data) async
     {
-        final response await http.post(
+        final response = await http.post(
             Uri.parse('$baseUrl/createUser'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode(data)

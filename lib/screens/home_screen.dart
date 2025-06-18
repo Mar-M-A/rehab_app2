@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/slidable_session_card.dart';
+import '../services/api_service.dart';
 
 class HomeScreen extends StatefulWidget {
     final String userName;

@@ -14,7 +14,7 @@ class ExerciseScreen extends StatefulWidget {
     required this.sets,
     required this.reps,
     required this.sessionExerciseId,
-  });
+  }) : super(key: key);
 
   @override
   _ExerciseScreenState createState() => _ExerciseScreenState();
@@ -25,7 +25,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
 {
   int _hrCount = 0;
   int brCount = 0;
-  double _currentMean_Hr = 0.0;
+  double _currentMeanHr = 0.0;
   double _currentMeanBr = 0.0;
 
   // stream controllers for sumulating sensor data
@@ -57,6 +57,7 @@ class _ExerciseScreenState extends State<ExerciseScreen>
       // Accumulate for mean calculation
       _currentMeanHr = (_currentMeanHr * _hrCount + simulatedHr) / (_hrCount + 1);
       _hrCount++;
+
       _currentMeanBr = (_currentMeanBr * _brCount + simulatedBr) / (_brCount + 1);
       _brCount++;
 

@@ -8,10 +8,10 @@ _WorkoutScreenState createState() => _WorkoutScreenState();
 
 class _WorkoutScreenState extends State<WorkoutScreen> {
     final PageController _controller = PageController();
-    final List<Map<String, dynamic> exercises = [
-    {'name': 'Squats', 'id', 1},
-    {'name': 'Push-ups', 'id', 2},
-    {'name': 'Pull-ups', 'id', 3},
+    final List<Map<String, dynamic>> exercises = [
+        {'name': 'Squats', 'id': 1},
+        {'name': 'Push-ups', 'id': 2},
+        {'name': 'Pull-ups', 'id': 3},
     ];
 
     int? _currentSessionId;
@@ -81,35 +81,36 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
     Future<void> _submitMetricsAndFinish() async
     {
-    if (_currentSessionExerciseId == null || meanHr == null || meanBr == null)
-    {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Metrics not available yet.')),
-        );
-        return;
-    }
+        if (_currentSessionExerciseId == null || meanHr == null || meanBr == null)
+        {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Metrics not available yet.')),
+            );
+            return;
+        }
 
-    bool success = await ApiService.setMetrics(
-        _currentExerciseId!, 
-        meanHr!, 
-        meanBr!
-    );
-
-    if (!success)
-    {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to submit metrics')),
+        bool success = await ApiService.setMetrics(
+            _currentExerciseId!, 
+            meanHr!, 
+            meanBr!
         );
-    }
-    else
-    {
-        await showMetrics(_currentSessionExerciseId!);
-        Navigator.pushNamedandRemoveUntil(context, '/home', (route) => false);
+
+        if (!success)
+        {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed to submit metrics')),
+            );
+        }
+        else
+        {
+            await showMetrics(_currentSessionExerciseId!);
+            Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        }
     }
 
     Future<void>showMetrics (int sessionExerciseId) async
     {
-        final metrics = await.ApiService.fetchSessionExercisesummary(sessionExerciseId);
+        final metrics = await ApiService.fetchSessionExercisesummary(sessionExerciseId);
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
@@ -130,45 +131,44 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
     @override
     Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text('Workout')),
-        body: Column(
-        children: [
-            Expanded(
-            child: PageView.builder(
-                controller: _controller,
-                itemCount: exercises.length,
-                itemBuilder: (ctx, i) {
-                    final exercise = exercises[i]
-                    return Center(
-                        child: Card(
-                        margin: EdgeInsets.all(24),
-                        child: ListTile(
-                            title: Text(exercise['name']!),
-                            trailing: Icon(Icons.arrow_forward),
-                            onTap: () => _startAndNavigateToExercise(
-                                exercise['name']!,
-                                exercise['id']!,
-                                3, //example sets
-                                12, //example reps
+        return Scaffold(
+            appBar: AppBar(title: Text('Workout')),
+            body: Column(
+                children: [
+                    Expanded(
+                        child: PageView.builder(
+                            controller: _controller,
+                            itemCount: exercises.length,
+                            itemBuilder: (ctx, i) {
+                                final exercise = exercises[i];
+                                return Center(
+                                    child: Card(
+                                        margin: EdgeInsets.all(24),
+                                        child: ListTile(
+                                            title: Text(exercise['name']!),
+                                            trailing: Icon(Icons.arrow_forward),
+                                            onTap: () => _startAndNavigateToExercise(
+                                                exercise['name']!,
+                                                exercise['id']!,
+                                                3, //example sets
+                                                12, //example reps
+                                            ),
+                                        ),
+                                    ),
+                                );
+                                },
+                            ),
+                            ),
+                            Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: ElevatedButton(
+                                onPressed: _submitMetricsAndFinish,
+                                child: Text('Finish Session'),
                             ),
                         ),
-                        ),
-                    );
-                    },
+                    ],
                 ),
-                ),
-                Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                    onPressed: _submitMetricsAndFinish,
-                    child: Text('Finish Session'),
-                ),
-                ),
-            ],
-            ),
-        );
+            );
     }
     
   }
-}
