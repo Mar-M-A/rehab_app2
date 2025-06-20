@@ -3,11 +3,28 @@ import 'package:http/http.dart' as http;
 import '../models/metrics_model.dart';
 
 class ApiService {
-  static const String baseUrl = 'https://api';
+  // static const String baseUrl = 'http://localhost:5000';
+  ///mirar la ip en el comando ipconfig getifaddr en0
+  static const String baseUrl = 'http://192.168.1.127:5000';
+
+
+  
 
   static Future<List<Metrics>> fetchMetrics(String exerciseName) async {
     final response = await http
         .get(Uri.parse('$baseUrl/getExercise?exerciseName=$exerciseName'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      return jsonData.map((item) => Metrics.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load metrics');
+    }
+  }
+
+  static Future<List<Metrics>> getSessionExercises() async {
+    final response = await http
+        .get(Uri.parse('$baseUrl/sessionExercises?exerciseName'));
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
@@ -47,14 +64,16 @@ class ApiService {
       return data['sessionExerciseId'];
     } else {
       print('Failed to start exercise session: ${response.body}');
-      return null;
+      return 1;
     }
   }
 
   static Future<bool> createUser(Map<String, dynamic> data) async {
+    print("createUser , $data");
     final response = await http.post(Uri.parse('$baseUrl/createUser'),
         headers: {'Content-Type': 'application/json'}, body: jsonEncode(data));
-    return response.statusCode == 200;
+    print("response $response");
+    return response.statusCode == 201;
   }
 
   static Future<List<dynamic>> getUserSessions(String userId) async {

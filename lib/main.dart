@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:rehab_app2/services/api_service.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/workout_screen.dart';
 import 'screens/exercise_screen.dart';
 
-void main() {
+void main() async  {
+
+  // print("hoal");
+  // bool aux = await ApiService.createUser({
+  //   'username':'pepito',
+  //   'password':'pepet',
+  //   'user_type':'no'
+  // });
+
+  // print("created user : $aux");
+
   runApp(RApp());
 }
 

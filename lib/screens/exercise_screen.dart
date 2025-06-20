@@ -28,16 +28,16 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   double _currentMeanBr = 0.0;
 
   // stream controllers for sumulating sensor data
-  late StreamController<double> _heartRateController;
-  late StreamController<double> _breathRateController;
+  // late StreamController<double> _heartRateController;
+  // late StreamController<double> _breathRateController;
   Timer? _sensorTimer;
 
   @override
   void initState() {
     super.initState();
 
-    _heartRateController = StreamController<double>();
-    _breathRateController = StreamController<double>();
+    // _heartRateController = StreamController<double>();
+    // _breathRateController = StreamController<double>();
 
     _startSensorDataStream();
   }
@@ -50,8 +50,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
       final simulatedBr =
           15.0 + (2 * (DateTime.now().second % 5 - 2)).toDouble(); // Randomize
 
-      _heartRateController.add(simulatedHr);
-      _breathRateController.add(simulatedBr);
+      // _heartRateController.add(simulatedHr);
+      // _breathRateController.add(simulatedBr);
 
       // Accumulate for mean calculation
       _currentMeanHr =
@@ -80,8 +80,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
 
   void _finishExercise() {
     _sensorTimer?.cancel();
-    _heartRateController.close();
-    _breathRateController.close();
+    // _heartRateController.close();
+    // _breathRateController.close();
 
     Navigator.pop(context, {
       'sessionExerciseId': widget.sessionExerciseId,
@@ -93,8 +93,8 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
   @override
   void dispose() {
     _sensorTimer?.cancel();
-    _heartRateController.close();
-    _breathRateController.close();
+    // _heartRateController.close();
+    // _breathRateController.close();
     super.dispose();
   }
 
@@ -114,26 +114,26 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
             Text('Live Metrics:',
                 style: Theme.of(context).textTheme.titleMedium),
             SizedBox(height: 8),
-            StreamBuilder<double>(
-              stream: _heartRateController.stream,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                      'Heart Rate: ${snapshot.data!.toStringAsFixed(1)} bpm');
-                }
-                return Text('Heart Rate: N/A');
-              },
-            ),
-            StreamBuilder<double>(
-              stream: _breathRateController.stream,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Text(
-                      'Breath Rate: ${snapshot.data!.toStringAsFixed(1)} bpm');
-                }
-                return Text('Breath Rate: N/A');
-              },
-            ),
+            // StreamBuilder<double>(
+            //   stream: _heartRateController.stream,
+            //   builder: (context, snapshot) {
+            //     if (snapshot.hasData) {
+            //       return Text(
+            //           'Heart Rate: ${snapshot.data!.toStringAsFixed(1)} bpm');
+            //     }
+            //     return Text('Heart Rate: N/A');
+            //   },
+            // ),
+            // StreamBuilder<double>(
+            //   stream: _breathRateController.stream,
+            //   builder: (context, snapshot) {
+            //     if (snapshot.hasData) {
+            //       return Text(
+            //           'Breath Rate: ${snapshot.data!.toStringAsFixed(1)} bpm');
+            //     }
+            //     return Text('Breath Rate: N/A');
+            //   },
+            // ),
             SizedBox(height: 24),
             Text('Average Metrics for this session:',
                 style: Theme.of(context).textTheme.titleMedium),
