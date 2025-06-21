@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rehab_app2/main.dart';
 import '../widgets/slidable_session_card.dart';
 import '../services/api_service.dart';
 
@@ -9,7 +10,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
+class _HomeScreenState extends State<HomeScreen> with RouteAware
 {
     List<String> pastSessions = [];
 
@@ -20,6 +21,24 @@ class _HomeScreenState extends State<HomeScreen>
         loadSessions();
     }
 
+    @override
+    void didPopNext() {
+      super.didPopNext();
+      loadSessions();
+    }
+
+    @override
+    void didChangeDependencies() {
+      super.didChangeDependencies();
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+    }
+
+    @override
+    void dispose() {
+      routeObserver.unsubscribe(this);
+      super.dispose();
+    }
+
     void loadSessions() async
     {
         try
@@ -27,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
             final sessions = await ApiService.getUserSessions("1");// Here goes the real user ID
             setState(()
             {
-                pastSessions = sessions.map((s) => 'Session ID: ${s['id']}').toList();
+                pastSessions = sessions.map((s) => 'Session ${s['id']} (${s["start_time"]})').toList();
             });
         }
         catch (e)

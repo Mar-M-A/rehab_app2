@@ -10,6 +10,8 @@ void main() async  {
   runApp(RApp());
 }
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 class RApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class RApp extends StatelessWidget {
               sessionExerciseId: 1,
             ),
       },
+      navigatorObservers: [routeObserver],
       // onGenerateRoute: (settings)
       // {
       //   if (settings.name == '/exercise')
