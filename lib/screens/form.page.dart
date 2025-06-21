@@ -1,18 +1,21 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:rehab_app2/models/exercise_model.dart';
+import 'package:rehab_app2/screens/running_screen.dart';
 import '../services/api_service.dart';
 
 class FormPage extends StatefulWidget {
   
-  final int session_id;
+  final int sessionId;
   
   const FormPage({
     super.key,
-    required this.session_id
+    required this.sessionId
   });
 
   @override
-  _FormPageState createState() => _FormPageState();
+  State<FormPage> createState() => _FormPageState();
 }
 
 class _FormPageState extends State<FormPage> {
@@ -164,9 +167,17 @@ class _FormPageState extends State<FormPage> {
             ),
             // Spacer(),
             if (exerciseId >= 0) GestureDetector(
-              onTap: () {
-                //TODO start exercise
-                print("Weight $weight session ${widget.session_id}");
+              onTap: () async {
+                final fetched = await ApiService.startExerciseSet(widget.sessionId, exerciseId, reps, weight);
+                
+                if (fetched! >= 0)
+                {
+                  if (context.mounted) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => RunningScreen(setId: fetched, exerciseId: exerciseId,)),
+                    );
+                  }
+                }
               },
               child: Container(
                 padding: EdgeInsets.all(10),
@@ -177,7 +188,7 @@ class _FormPageState extends State<FormPage> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text("Enviar", style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
+                child: Text("Start exercise", style: TextStyle(color: Colors.white), textAlign: TextAlign.center,),
               ),
             ),
           ],

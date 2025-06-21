@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rehab_app2/services/api_service.dart';
 import 'screens/welcome_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/workout_screen.dart';
-import 'screens/exercise_screen.dart';
 
 void main() async  {
 
@@ -13,6 +11,8 @@ void main() async  {
 final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 class RApp extends StatelessWidget {
+  const RApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,30 +23,8 @@ class RApp extends StatelessWidget {
         '/': (_) => WelcomeScreen(),
         '/home': (_) => HomeScreen(userName: 'John'),
         '/workout': (_) => WorkoutScreen(),
-        '/exercise': (_) => ExerciseScreen(
-              exerciseName: 'Squats',
-              sets: 3,
-              reps: 12,
-              sessionExerciseId: 1,
-            ),
       },
       navigatorObservers: [routeObserver],
-      // onGenerateRoute: (settings)
-      // {
-      //   if (settings.name == '/exercise')
-      //   {
-      //     final args = settings.arguments as Map<String, dynamic>;
-
-      //     return MaterialPageRoute(
-      //       builder: (_) => ExerciseScreen(
-      //         exerciseName: args['exerciseName'],
-      //         sets: args['sets'],
-      //         reps: args['reps'],
-      //       ),
-      //     );
-      //   }
-      //   return null;
-      // },
     );
   }
 }

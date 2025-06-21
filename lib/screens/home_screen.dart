@@ -1,11 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:rehab_app2/main.dart';
-import '../widgets/slidable_session_card.dart';
 import '../services/api_service.dart';
 
 class HomeScreen extends StatefulWidget {
     final String userName;
-    const HomeScreen({Key? key, required this.userName}) : super(key: key);
+    const HomeScreen({super.key, required this.userName});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
