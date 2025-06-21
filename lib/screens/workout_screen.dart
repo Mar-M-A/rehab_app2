@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rehab_app2/models/exercise_model.dart';
 import 'package:rehab_app2/screens/form.page.dart';
 import '../services/api_service.dart';
 
@@ -9,11 +10,7 @@ class WorkoutScreen extends StatefulWidget {
 
 class _WorkoutScreenState extends State<WorkoutScreen> {
   final PageController _controller = PageController();
-  final List<Map<String, dynamic>> exercises = [
-    {'name': 'Squats', 'id': 1},
-    {'name': 'Push-ups', 'id': 2},
-    {'name': 'Pull-ups', 'id': 3},
-  ];
+  List<Exercise> exercises = [];
 
   int? _currentSessionId;
   int? _currentExerciseId;
@@ -27,6 +24,18 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     super.initState();
     //TODO: obtain the current sessionid from a global state or pass it from homescreen
     _currentSessionId = 1; //for testing purposes
+    _loadExercises();
+  }
+
+  void _loadExercises() async {
+    try {
+      final fetched = await ApiService.fetchExercises();
+      setState(() {
+        exercises = fetched;
+      });
+    } catch (e) {
+      print('Failed to load exercises: $e');
+    }
   }
 
   Future<void> _startAndNavigateToExercise(
@@ -140,12 +149,12 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               child: Card(
                 margin: EdgeInsets.all(24),
                 child: ListTile(
-                  title: Text(exercise['name']!),
+                  title: Text(exercise.description),
                   trailing: Icon(Icons.arrow_forward),
                   onTap:
                       () => _startAndNavigateToExercise(
-                        exercise['name']!,
-                        exercise['id']!,
+                        exercise.description,
+                        exercise.id,
                         3, //example sets
                         12, //example reps
                       ),

@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen>
             final sessions = await ApiService.getUserSessions("1");// Here goes the real user ID
             setState(()
             {
-                pastSessions = sessions.map((s) => 'Session ID: ${s['"id']}').toList();
+                pastSessions = sessions.map((s) => 'Session ID: ${s['id']}').toList();
             });
         }
         catch (e)
