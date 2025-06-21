@@ -22,9 +22,20 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   @override
   void initState() {
     super.initState();
-    //TODO: obtain the current sessionid from a global state or pass it from homescreen
     _currentSessionId = 1; //for testing purposes
+    _createSession();
     _loadExercises();
+  }
+
+  void _createSession() async {
+    try {
+      final fetched = await ApiService.createNewSession("1");
+      setState(() {
+        _currentSessionId = fetched;
+      });
+    } catch (e) {
+      print('Failed to load session: $e');
+    }
   }
 
   void _loadExercises() async {
@@ -52,7 +63,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       );
       return;
     }
-    final int? newSessionExerciseId = await ApiService.startExerciseSession(
+    final int? newSessionExerciseId = await ApiService.startExerciseSet(
       _currentSessionId!,
       exerciseId,
     );
@@ -88,28 +99,11 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     }
   }
 
-  Future<void> _submitMetricsAndFinish() async {
-    if (_currentSessionExerciseId == null || meanHr == null || meanBr == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Metrics not available yet.')));
-      return;
-    }
+  Future<void> _finishSession() async {
 
-    bool success = await ApiService.setMetrics(
-      _currentExerciseId!,
-      meanHr!,
-      meanBr!,
-    );
+    //TODO change time in db?
 
-    if (!success) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Failed to submit metrics')));
-    } else {
-      await showMetrics(_currentSessionExerciseId!);
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-    }
+    Navigator.pop(context); //Go to previous screen
   }
 
   Future<void> showMetrics(int sessionExerciseId) async {
@@ -141,7 +135,10 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Workout')),
+      appBar: AppBar(
+        title: Text('Workout'),
+        automaticallyImplyLeading: false,
+      ),
       body: Column(
         children: [
           ...exercises.map((exercise) {
@@ -162,31 +159,6 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               ),
             );
           }),
-          //   Expanded(
-          //     child: PageView.builder(
-          //       controller: _controller,
-          //       itemCount: exercises.length,
-          //       itemBuilder: (ctx, i) {
-          //         final exercise = exercises[i];
-          //         return Center(
-          //           child: Card(
-          //             margin: EdgeInsets.all(24),
-          //             child: ListTile(
-          //               title: Text(exercise['name']!),
-          //               trailing: Icon(Icons.arrow_forward),
-          //               onTap:
-          //                   () => _startAndNavigateToExercise(
-          //                     exercise['name']!,
-          //                     exercise['id']!,
-          //                     3, //example sets
-          //                     12, //example reps
-          //                   ),
-          //             ),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ),
           GestureDetector(
             onTap: () {
                 print('Tapped!');
@@ -210,7 +182,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: _submitMetricsAndFinish,
+              onPressed: _finishSession,
               child: Text('Finish Session'),
             ),
           ),

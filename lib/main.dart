@@ -7,15 +7,6 @@ import 'screens/exercise_screen.dart';
 
 void main() async  {
 
-  // print("hoal");
-  // bool aux = await ApiService.createUser({
-  //   'username':'pepito',
-  //   'password':'pepet',
-  //   'user_type':'no'
-  // });
-
-  // print("created user : $aux");
-
   runApp(RApp());
 }
 

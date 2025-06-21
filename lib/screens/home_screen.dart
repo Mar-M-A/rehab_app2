@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen>
                         Text('Past Sessions', style: Theme.of(context).textTheme.titleLarge),
                         const SizedBox(height: 16),
                         ...pastSessions.map((session) => Card(
-                            child: ListTile(
+                            child: ListTile( //TODO make buttons, screen with info
                                 title: Text(session)
                             ),
                         )),
