@@ -6,7 +6,7 @@ import '../models/exercise_model.dart';
 class ApiService {
   // static const String baseUrl = 'http://localhost:5000';
   ///mirar la ip en el comando ipconfig getifaddr en0
-  static const String baseUrl = 'http://127.0.0.1:5000'; //'http://192.168.1.127:5000';
+  static const String baseUrl = 'http://192.168.1.127:5000';
 
 
   
