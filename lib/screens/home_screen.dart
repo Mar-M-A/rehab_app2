@@ -94,28 +94,33 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware
                         ...pastSessions.map((session) {
                           final durationStr = _formatDuration(session.duration);
 
-                          return Card(
-                            margin: EdgeInsets.symmetric(vertical: 6),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            child: ListTile(
-                              title: RichText(
-                                text: TextSpan(
-                                  style: Theme.of(context).textTheme.bodyLarge,
+                          return GestureDetector(
+                            onTap: () {
+                              print('Clicked session ID: ${session.id}');
+                            },
+                            child: Card(
+                              margin: EdgeInsets.symmetric(vertical: 6),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              child: ListTile(
+                                title: RichText(
+                                  text: TextSpan(
+                                    style: Theme.of(context).textTheme.bodyLarge,
+                                    children: [
+                                      TextSpan(text: 'Session ', style: TextStyle(color: Colors.black)),
+                                      TextSpan(text: '${session.id}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
+                                    ],
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextSpan(text: 'Session ', style: TextStyle(color: Colors.black)),
-                                    TextSpan(text: '${session.id}', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
+                                    Text(DateFormat('yyyy-MM-dd HH:mm').format(session.start)),
+                                    Text('Duration: $durationStr', style: TextStyle(color: Colors.grey[600])),
                                   ],
                                 ),
+                                leading: Icon(Icons.schedule, color: Colors.blue),
                               ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(DateFormat('yyyy-MM-dd HH:mm').format(session.start)),
-                                  Text('Duration: $durationStr', style: TextStyle(color: Colors.grey[600])),
-                                ],
-                              ),
-                              leading: Icon(Icons.schedule, color: Colors.blue),
-                            ),
+                            )
                           );
                         }),
                         
