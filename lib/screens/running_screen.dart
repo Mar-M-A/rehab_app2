@@ -77,6 +77,7 @@ class _RunningScreenState extends State<RunningScreen> {
               });
 
               completeness = [...padding, ...completeness];
+              completeness.sort((a, b) => a.x.compareTo(b.x));
             }
 
             // Update last timestamp
