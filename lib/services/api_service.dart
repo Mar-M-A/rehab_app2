@@ -87,6 +87,24 @@ class ApiService {
     }
   }
 
+  static Future<bool> finishSession(
+      int sessionId) async {
+    Map data = {
+      'session_id': sessionId,
+    };
+    final response = await http.post(
+      Uri.parse('$baseUrl/finishSession'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 500)
+    {
+      print("Error finishing session");
+    }    
+    return response.statusCode == 200;
+  }
+
   static Future<List<dynamic>> getUserSessions(String userId) async {
     final response = await http.get(
       Uri.parse('$baseUrl/userSessions?user_id=$userId'),

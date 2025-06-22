@@ -38,7 +38,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
   Future<void> _finishSession() async {
 
-    //TODO change time in db?
+    await ApiService.finishSession(_currentSessionId);
+
+    if (!mounted) return;
 
     Navigator.pop(context); //Go to previous screen
   }
