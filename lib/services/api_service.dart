@@ -104,11 +104,11 @@ class ApiService {
         'set_id': setId
       }),
     );
-    if (response.statusCode != 200)
+    if (response.statusCode == 500)
     {
       print("Possible error in set metrics");
     }    
-    return response.statusCode == 200;
+    return response.statusCode == 201;
   }
 
   static Future<bool> setExercise(

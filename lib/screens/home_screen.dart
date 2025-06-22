@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware
                         Text('Past Sessions', style: Theme.of(context).textTheme.titleLarge),
                         const SizedBox(height: 16),
                         ...pastSessions.map((session) => Card(
-                            child: ListTile( //TODO make buttons, screen with info
+                            child: ListTile( //TODO make buttons, new screen with info (like workout but without adding new sets)
                                 title: Text(session)
                             ),
                         )),
