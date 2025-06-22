@@ -25,6 +25,8 @@ class ApiService {
     }
   }
 
+  //TODO fetch sets (summary for workout screen)
+
   static Future<List<Metrics>> getSessionExercises() async {
     final response = await http
         .get(Uri.parse('$baseUrl/sessionExercises?exerciseName'));

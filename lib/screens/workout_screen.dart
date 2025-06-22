@@ -54,8 +54,6 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
         child: Column(
           children: [
             //TODO display previous exercises from set (summary)
-            //TODO button start new exercise (go to form)
-            //TODO keep "finish session"
             
             GestureDetector(
               onTap: () {
@@ -72,7 +70,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
-                  "Anar al form",
+                  "New exercise",
                   style: TextStyle(color: Colors.white),
                 ),
               ),

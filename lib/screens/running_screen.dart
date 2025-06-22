@@ -27,7 +27,7 @@ class _RunningScreenState extends State<RunningScreen> {
 
   void _initializeExercise() async {
     try {
-      await ApiService.setExercise(0, widget.setId, widget.exerciseId);
+      await ApiService.setExercise(1, widget.setId, widget.exerciseId);
     } catch (e) {
       print('Failed to init exercises: $e');
     }
@@ -48,10 +48,10 @@ class _RunningScreenState extends State<RunningScreen> {
               ElevatedButton(
                 onPressed: () async {
                   //Send stop signal (for sensors)
-                  await ApiService.setExercise(0, widget.setId, -1);
+                  await ApiService.setExercise(1, widget.setId, -1);
                   await ApiService.setMetrics(widget.setId);
                   if (context.mounted){
-                    Navigator.pop(context);
+                    Navigator.popUntil(context, ModalRoute.withName('/workout'));
                   }
                 }, 
                 child: Text('Finish exercise'),

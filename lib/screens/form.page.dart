@@ -68,9 +68,8 @@ class _FormPageState extends State<FormPage> {
                 }).toList(),
                 onChanged: (value) {
                   setState(() {
-                    exerciseId = value!-1;
+                    exerciseId = value!;
                   });
-                  print("$exerciseId, ${exerciseId >= 0}");
                 },
               ),
             ),
@@ -166,7 +165,7 @@ class _FormPageState extends State<FormPage> {
               ],
             ),
             // Spacer(),
-            if (exerciseId >= 0) GestureDetector(
+            if (exerciseId > 0) GestureDetector(
               onTap: () async {
                 final fetched = await ApiService.startExerciseSet(widget.sessionId, exerciseId, reps, weight);
                 
