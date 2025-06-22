@@ -47,7 +47,7 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Formulari")),
+      appBar: AppBar(title: Text("Exercise settings")),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -87,7 +87,7 @@ class _FormPageState extends State<FormPage> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.black, width: 1),
                       ),
-                      width: 180,
+                      width: 140,
                       height: 40,
                       alignment: Alignment.center,
                       child: TextFormField(
@@ -130,7 +130,7 @@ class _FormPageState extends State<FormPage> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: Colors.black, width: 1),
                       ),
-                      width: 180,
+                      width: 140,
                       height: 40,
                       alignment: Alignment.center,
                       child: TextFormField(
