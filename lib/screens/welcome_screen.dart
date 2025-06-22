@@ -23,7 +23,7 @@ class WelcomeScreen extends StatelessWidget {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Welcome to RApp!',
+                Text('Welcome to Rehab App!',
                     style: Theme.of(context).textTheme.headlineMedium),
                 SizedBox(height: 16),
                 Text('Start your rehabilitation program.',
