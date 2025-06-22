@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:rehab_app2/main.dart';
 import 'package:rehab_app2/models/session_model.dart';
+import 'package:rehab_app2/screens/pastsession_screen.dart';
 import '../services/api_service.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
@@ -96,7 +97,10 @@ class _HomeScreenState extends State<HomeScreen> with RouteAware
 
                           return GestureDetector(
                             onTap: () {
-                              print('Clicked session ID: ${session.id}');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => PastSessionScreen(sessionId: session.id)),
+                              );
                             },
                             child: Card(
                               margin: EdgeInsets.symmetric(vertical: 6),
