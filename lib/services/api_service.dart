@@ -8,7 +8,12 @@ import '../models/exercise_model.dart';
 class ApiService {
   // static const String baseUrl = 'http://localhost:5000';
   ///mirar la ip en el comando ipconfig getifaddr en0
-  static const String baseUrl = 'http://192.168.1.43:5000';
+  static String baseUrl = 'http://192.168.1.43:5000';
+
+  static setUrl(String url) {
+    baseUrl = 'http://$url:5000';
+    //print('New URL: $baseUrl');
+  }
 
 
   static Future<List<Exercise>> fetchExercises() async {
