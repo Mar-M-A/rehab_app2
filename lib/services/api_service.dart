@@ -2,12 +2,11 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:rehab_app2/models/point_model.dart';
 import 'package:rehab_app2/models/set_model.dart';
 import '../models/exercise_model.dart';
 
 class ApiService {
-  // static const String baseUrl = 'http://localhost:5000';
-  ///mirar la ip en el comando ipconfig getifaddr en0
   static String baseUrl = 'http://192.168.1.43:5000';
 
   static setUrl(String url) {
@@ -43,6 +42,58 @@ class ApiService {
       return [];
       // throw Exception('Failed to load sets');
     }
+  }
+
+  static Future<List<List<PointInfo>>> fetchSetSummary(int setId) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/getSetSummary?set_id=$setId'),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    List<PointInfo> completenessPoints = [];
+    List<PointInfo> instabilityPoints = [];
+    List<PointInfo> breathRatePoints = [];
+    List<PointInfo> heartRatePoints = [];
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+
+      // Extract kinect data
+      if (jsonData.containsKey('kinect')) {
+        final List<dynamic> kinectList = jsonData['kinect'];
+        for (var item in kinectList) {
+          double? completeness = (item['completeness'] as num?)?.toDouble();
+          double? instability = (item['instability'] as num?)?.toDouble();
+          double? ts = (item['ts'] as num?)?.toDouble();
+
+          if (completeness != null && ts != null) {
+            completenessPoints.add(PointInfo(x: ts, y: completeness));
+          }
+          if (instability != null && ts != null) {
+            instabilityPoints.add(PointInfo(x: ts, y: instability));
+          }
+        }
+      }
+
+      // Extract pox data
+      if (jsonData.containsKey('pox')) {
+        final List<dynamic> poxList = jsonData['pox'];
+        for (var item in poxList) {
+          double? breathRate = (item['breath_rate'] as num?)?.toDouble();
+          double? heartRate = (item['heart_rate'] as num?)?.toDouble();
+          double? ts = (item['ts'] as num?)?.toDouble();
+
+          if (breathRate != null && ts != null) {
+            breathRatePoints.add(PointInfo(x: ts, y: breathRate));
+          }
+          if (heartRate != null && ts != null) {
+            heartRatePoints.add(PointInfo(x: ts, y: heartRate));
+          }
+        }
+      }
+    }
+
+    return [completenessPoints, instabilityPoints, heartRatePoints, breathRatePoints];
   }
 
   static Future<int?> startExerciseSet(

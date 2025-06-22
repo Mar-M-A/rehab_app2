@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:rehab_app2/main.dart';
 import 'package:rehab_app2/models/set_model.dart';
+import 'package:rehab_app2/screens/set_summary.dart';
 import '../services/api_service.dart';
 
 class PastSessionScreen extends StatefulWidget {
@@ -84,44 +85,52 @@ class _PastSessionScreenState extends State<PastSessionScreen> with RouteAware {
         child: Column(
           children: [
             ...pastExercises.map((set) {
-              return Card(
-                margin: EdgeInsets.symmetric(vertical: 6),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            set.exercise,
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blueAccent),
-                          ),
-                          Text(
-                            "Duration: ${set.duration.toStringAsFixed(1)} s",
-                            style: TextStyle(fontSize: 14, color: Colors.grey[700]),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildStat("Breath", "${set.mBreathRate.toStringAsFixed(1)} bpm"),
-                          _buildStat("Heart", "${set.mHeartRate.toStringAsFixed(1)} bpm"),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildStat("Reps", "${set.reps}"),
-                          _buildStat("Weight", "${set.weight} kg"),
-                        ],
-                      ),
-                    ],
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SetSummaryScreen(setId: set.id, exerciseName: set.exercise,)),
+                  );
+                },
+                child: Card(
+                  margin: EdgeInsets.symmetric(vertical: 6),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              set.exercise,
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                            ),
+                            Text(
+                              "Duration: ${set.duration.toStringAsFixed(1)} s",
+                              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildStat("Breath", "${set.mBreathRate.toStringAsFixed(1)} bpm"),
+                            _buildStat("Heart", "${set.mHeartRate.toStringAsFixed(1)} bpm"),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildStat("Reps", "${set.reps}"),
+                            _buildStat("Weight", "${set.weight} kg"),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
