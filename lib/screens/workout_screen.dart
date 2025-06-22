@@ -115,9 +115,18 @@ class _WorkoutScreenState extends State<WorkoutScreen> with RouteAware {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        set.exercise,
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            set.exercise,
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                          ),
+                          Text(
+                            "Duration: ${set.duration.toStringAsFixed(1)} s",
+                            style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Row(
