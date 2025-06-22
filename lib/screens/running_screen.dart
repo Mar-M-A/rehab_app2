@@ -67,7 +67,7 @@ class _RunningScreenState extends State<RunningScreen> {
               //Padding
               final missing = keepPoints - completeness.length;
               final double startTs = completeness.first.x;
-              final double step = 0.1;
+              final double step = 0.25;
 
               final List<PointInfo> padding = List.generate(missing, (i) {
                 return PointInfo(
