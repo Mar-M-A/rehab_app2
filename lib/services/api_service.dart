@@ -96,6 +96,22 @@ class ApiService {
     return [completenessPoints, instabilityPoints, heartRatePoints, breathRatePoints];
   }
 
+  static Future<List<PointInfo>> fetchLiveReps(int setId, double timestamp) async {
+    final response = await http.get(
+          Uri.parse('$baseUrl/getLiveRepetition?set_id=$setId&timestamp=$timestamp'),
+          headers: {'Content-Type': 'application/json'},
+      );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = json.decode(response.body);
+      return jsonData.map((item) => 
+        PointInfo(x:item["ts"],y:item["completeness"])
+      ).toList();
+    } else {
+      return [];
+    }
+  }
+
   static Future<int?> startExerciseSet(
       int sessionId, int exerciseId, int reps, double weight) async {
     Map data = {

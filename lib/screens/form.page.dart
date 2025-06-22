@@ -164,8 +164,8 @@ class _FormPageState extends State<FormPage> {
                 ),
               ],
             ),
-            // Spacer(),
-            if (exerciseId > 0) GestureDetector(
+            SizedBox(height: 16),
+            if (exerciseId > 0 && reps > 0) GestureDetector(
               onTap: () async {
                 final fetched = await ApiService.startExerciseSet(widget.sessionId, exerciseId, reps, weight);
                 
@@ -173,7 +173,7 @@ class _FormPageState extends State<FormPage> {
                 {
                   if (context.mounted) {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => RunningScreen(setId: fetched, exerciseId: exerciseId,)),
+                      MaterialPageRoute(builder: (context) => RunningScreen(setId: fetched, exerciseId: exerciseId, repetitions: reps,)),
                     );
                   }
                 }

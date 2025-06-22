@@ -58,7 +58,7 @@ class _SetSummaryScreenState extends State<SetSummaryScreen> {
           children: [
             Text(widget.exerciseName,
                     style: Theme.of(context).textTheme.headlineMedium),
-                SizedBox(height: 16),
+            SizedBox(height: 16),
             PointGraph(
               points: repetitions, 
               title: 'Repetitions',
