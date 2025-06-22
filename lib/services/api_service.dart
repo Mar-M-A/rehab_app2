@@ -2,7 +2,7 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/metrics_model.dart';
+import 'package:rehab_app2/models/set_model.dart';
 import '../models/exercise_model.dart';
 
 class ApiService {
@@ -30,17 +30,18 @@ class ApiService {
     }
   }
 
-  //TODO fetch sets (summary for workout screen)
-
-  static Future<List<Metrics>> getSessionExercises() async {
-    final response = await http
-        .get(Uri.parse('$baseUrl/sessionExercises?exerciseName'));
+  static Future<List<SetInfo>> fetchSets(int sessionId) async {
+    final response = await http.get(
+          Uri.parse('$baseUrl/sets?session_id=$sessionId'),
+          headers: {'Content-Type': 'application/json'},
+      );
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
-      return jsonData.map((item) => Metrics.fromJson(item)).toList();
+      return jsonData.map((item) => SetInfo.fromJson(item)).toList();
     } else {
-      throw Exception('Failed to load metrics');
+      return [];
+      // throw Exception('Failed to load sets');
     }
   }
 

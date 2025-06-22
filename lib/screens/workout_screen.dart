@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:rehab_app2/main.dart';
+import 'package:rehab_app2/models/set_model.dart';
 import 'package:rehab_app2/screens/form.page.dart';
 import '../services/api_service.dart';
 
@@ -12,7 +14,9 @@ class WorkoutScreen extends StatefulWidget {
   State<WorkoutScreen> createState() => _WorkoutScreenState();
 }
 
-class _WorkoutScreenState extends State<WorkoutScreen> {
+class _WorkoutScreenState extends State<WorkoutScreen> with RouteAware {
+
+  List<SetInfo> pastExercises = [];
 
   late int _currentSessionId;
 
@@ -25,16 +29,52 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     _createSession();
   }
 
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    _loadSetsFromSession();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
   void _createSession() async {
     try {
       final fetched = await ApiService.createNewSession("1");
       setState(() {
         _currentSessionId = fetched!;
       });
+
+      _loadSetsFromSession();
+
     } catch (e) {
       print('Failed to load session: $e');
     }
   }
+
+  void _loadSetsFromSession() async
+    {
+        try
+        {
+          final sets = await ApiService.fetchSets(_currentSessionId);
+          setState(() {
+            pastExercises = sets;
+          });
+        }
+        catch (e)
+        {
+          print('Failed to load sets: $e');
+        }
+    }
 
   Future<void> _finishSession() async {
 
@@ -42,7 +82,18 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
     if (!mounted) return;
 
-    Navigator.pop(context); //Go to previous screen
+    //Go to home
+    Navigator.of(context).pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+  }
+
+  Widget _buildStat(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+        Text(value, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+      ],
+    );
   }
 
   @override
@@ -55,11 +106,43 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            //TODO display previous exercises from set (summary)
+            ...pastExercises.map((set) {
+              return Card(
+                margin: EdgeInsets.symmetric(vertical: 6),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        set.exercise,
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildStat("Breath", "${set.mBreathRate.toStringAsFixed(1)} bpm"),
+                          _buildStat("Heart", "${set.mHeartRate.toStringAsFixed(1)} bpm"),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildStat("Reps", "${set.reps}"),
+                          _buildStat("Weight", "${set.weight} kg"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
             
             GestureDetector(
               onTap: () {
-                  print('Tapped!');
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => FormPage(sessionId: _currentSessionId)),
