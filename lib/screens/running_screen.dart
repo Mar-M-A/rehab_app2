@@ -131,12 +131,12 @@ class _RunningScreenState extends State<RunningScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Exercise in progress...',
@@ -147,20 +147,23 @@ class _RunningScreenState extends State<RunningScreen> {
                   ),
                 ]
               ),
-              SizedBox(height: 16),
-              PointGraph(
+            ),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: PointGraph(
                 points: completeness,
                 color: expectsUpper ? Colors.indigo.shade900 : Colors.red.shade800,
                 maxY: 100,
                 minY: 0,
               ),
-              SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _finishExercise,
-                child: Text('Finish exercise'),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _finishExercise,
+              child: Text('Finish exercise'),
+            ),
+          ],
         ),
       ),
     );
